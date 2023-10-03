@@ -15,6 +15,6 @@ public class UserResponseDTO{
     private String role;
     private String clientKey;
     private PlanType planType;
-    private List<HealthPlanDTO> healthPlan;
+    private List<HealthInsuranceDTO> healthInsurance;
     private String url;
 }

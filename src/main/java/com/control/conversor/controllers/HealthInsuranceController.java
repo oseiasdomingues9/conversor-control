@@ -1,9 +1,9 @@
 package com.control.conversor.controllers;
 
 
+import com.control.conversor.dto.HealthInsuranceDTO;
 import com.control.conversor.dto.StatusResponseDTO;
-import com.control.conversor.services.HealthPlanService;
-import com.control.conversor.dto.HealthPlanDTO;
+import com.control.conversor.services.HealthInsuranceService;
 import com.control.conversor.mapper.UserMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -12,32 +12,32 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/plans")
+@RequestMapping("/health-insurance")
 @RequiredArgsConstructor
-public class HealthPlanController {
+public class HealthInsuranceController {
 
-    private final HealthPlanService healthPlanService;
+    private final HealthInsuranceService healthInsuranceService;
 
     @Autowired
     protected UserMapper userMapper;
 
     @GetMapping("/{id}")
     private ResponseEntity<StatusResponseDTO> findById(@PathVariable @Valid String id) {
-        return healthPlanService.findById(id);
+        return healthInsuranceService.findById(id);
     }
 
     @GetMapping
     private ResponseEntity<StatusResponseDTO> findAll() {
-        return healthPlanService.findAll();
+        return healthInsuranceService.findAll();
     }
 
     @PostMapping
-    private ResponseEntity<StatusResponseDTO> create(@RequestBody HealthPlanDTO healthPlanDTO){
-        return healthPlanService.create(healthPlanDTO);
+    private ResponseEntity<StatusResponseDTO> create(@RequestBody HealthInsuranceDTO healthInsuranceDTO){
+        return healthInsuranceService.create(healthInsuranceDTO);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<StatusResponseDTO> delete(@PathVariable String id){
-        return healthPlanService.delete(id);
+        return healthInsuranceService.delete(id);
     }
 }

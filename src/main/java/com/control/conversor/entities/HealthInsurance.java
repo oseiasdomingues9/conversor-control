@@ -11,9 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "health_plan")
+@Table(name = "health_insurance")
 @EqualsAndHashCode(of = "id")
-public class HealthPlan {
+public class HealthInsurance {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -24,8 +24,7 @@ public class HealthPlan {
     private String name;
 
     @ElementCollection
-    @CollectionTable(name = "plan_version", joinColumns = @JoinColumn(name = "version_id"))
-    @Column(name = "version")
+    @CollectionTable(name = "tiss_versions", joinColumns = @JoinColumn(name = "health_plan_id"))
     private List<String> version;
 
     @Column(nullable = false)

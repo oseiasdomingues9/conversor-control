@@ -4,11 +4,11 @@ import com.control.conversor.dto.StatusResponseDTO;
 import com.control.conversor.dto.UserDTO;
 import com.control.conversor.dto.UserResponseDTO;
 import com.control.conversor.entities.Client;
+import com.control.conversor.entities.HealthInsurance;
 import com.control.conversor.enums.PlanType;
 import com.control.conversor.repositories.ClientRepository;
-import com.control.conversor.repositories.HealthPlanRepository;
+import com.control.conversor.repositories.HealthInsuranceRepository;
 import com.control.conversor.repositories.UserRepository;
-import com.control.conversor.entities.HealthPlan;
 import com.control.conversor.entities.User;
 import com.control.conversor.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final HealthPlanRepository healthPlanRepository;
+    private final HealthInsuranceRepository healthInsuranceRepository;
     private final ClientRepository clientRepository;
 
     @Autowired
@@ -53,9 +53,9 @@ public class UserService {
         Optional<User> userOptional = userRepository.findById(id);
         if(userOptional.isPresent()){
             User user = userOptional.get();
-            List<HealthPlan> healthPlans = healthPlanRepository.findByPlanType(user.getPlanType());
+            List<HealthInsurance> healthInsurances = healthInsuranceRepository.findByPlanType(user.getPlanType());
             UserResponseDTO userResponseDTO = userMapper.toUserResponseDTO(user);
-            userResponseDTO.setHealthPlan(userMapper.toHealthPlanList(healthPlans));
+            userResponseDTO.setHealthInsurance(userMapper.toHealthInsuranceList(healthInsurances));
             userResponseDTO.setClientKey(user.getClient().getKey());
             return new ResponseEntity<>(new StatusResponseDTO("Usuario encontrado com sucesso", userResponseDTO ,false), HttpStatus.OK);
         }else {
@@ -67,9 +67,9 @@ public class UserService {
         List<User> userList = userRepository.findAll();
         List<UserResponseDTO> userResponseDTOS = new ArrayList<>();
         for (User user : userList) {
-            List<HealthPlan> healthPlans = healthPlanRepository.findByPlanType(user.getPlanType());
+            List<HealthInsurance> healthInsurances = healthInsuranceRepository.findByPlanType(user.getPlanType());
             UserResponseDTO userResponseDTO = userMapper.toUserResponseDTO(user);
-            userResponseDTO.setHealthPlan(userMapper.toHealthPlanList(healthPlans));
+            userResponseDTO.setHealthInsurance(userMapper.toHealthInsuranceList(healthInsurances));
             userResponseDTO.setClientKey(user.getClient() != null ? user.getClient().getKey() : null);
             userResponseDTOS.add(userResponseDTO);
         }
