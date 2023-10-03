@@ -1,0 +1,34 @@
+springdoc:
+  api-docs:
+    path : /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+spring:
+  datasource:
+    username: postgres
+    password: root
+    url: jdbc:postgresql://localhost:15432/panel-control
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    #show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.EJB3NamingStrategy
+      physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        #format_sql: true
+        cache:
+          use_second_level_cache: false
+        jdbc:
+          lob:
+            non_contextual_creation: true
+    main:
+      allow-bean-definition-overriding: true
+
+api:
+  security:
+    token:
+      secret : ${JWT_SECRET:my-secret-key}
