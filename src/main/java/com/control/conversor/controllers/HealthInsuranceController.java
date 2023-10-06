@@ -3,6 +3,7 @@ package com.control.conversor.controllers;
 
 import com.control.conversor.dto.HealthInsuranceDTO;
 import com.control.conversor.dto.StatusResponseDTO;
+import com.control.conversor.dto.UserDTO;
 import com.control.conversor.services.HealthInsuranceService;
 import com.control.conversor.mapper.UserMapper;
 import jakarta.validation.Valid;
@@ -34,6 +35,11 @@ public class HealthInsuranceController {
     @PostMapping
     private ResponseEntity<StatusResponseDTO> create(@RequestBody HealthInsuranceDTO healthInsuranceDTO){
         return healthInsuranceService.create(healthInsuranceDTO);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<StatusResponseDTO> update(@RequestBody @Valid HealthInsuranceDTO healthInsuranceDTO, @PathVariable String id){
+        return healthInsuranceService.update(healthInsuranceDTO,id);
     }
 
     @DeleteMapping("/{id}")

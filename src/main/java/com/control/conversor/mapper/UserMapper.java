@@ -17,7 +17,6 @@ public interface UserMapper {
 
     @InheritConfiguration
     @Mapping(target = "healthInsurance",ignore = true)
-    @Mapping(target = "clientKey",ignore = true)
     UserResponseDTO toUserResponseDTO(User user);
 
     @Mapping(target = "user",ignore = true)

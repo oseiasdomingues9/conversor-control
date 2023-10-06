@@ -37,6 +37,12 @@ public class ClientService {
                 .orElseGet(() -> new ResponseEntity<>(new StatusResponseDTO("Cliente com id " + id + " não encontrado", null, true), HttpStatus.NOT_FOUND));
     }
 
+    public ResponseEntity<StatusResponseDTO> findByKey(String key) {
+        Optional<Client> clientOptional = clientRepository.findByKey(key);
+        return clientOptional.map(client -> new ResponseEntity<>(new StatusResponseDTO("Client encontrado com sucesso", clientMapper.toClientDTO(client), false), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(new StatusResponseDTO("Cliente com key " + key + " não encontrado", null, true), HttpStatus.NOT_FOUND));
+    }
+
     public ResponseEntity<StatusResponseDTO> findAll(){
         List<Client> clientList = clientRepository.findAll();
         return new ResponseEntity<>(new StatusResponseDTO("Cliente salvo com sucesso", clientMapper.toClientDTOList(clientList) ,false), HttpStatus.OK);
@@ -59,4 +65,6 @@ public class ClientService {
         clientRepository.deleteById(id);
         return new ResponseEntity<>(new StatusResponseDTO("Cliente deletado com sucesso",null,false),HttpStatus.OK);
     }
+
+
 }

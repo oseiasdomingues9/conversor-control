@@ -13,7 +13,7 @@ public class UserResponseDTO{
     private String email;
     private boolean active;
     private String role;
-    private String clientKey;
+    private ClientDTO client;
     private PlanType planType;
     private List<HealthInsuranceDTO> healthInsurance;
     private String url;

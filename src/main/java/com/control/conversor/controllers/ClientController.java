@@ -3,6 +3,7 @@ package com.control.conversor.controllers;
 
 import com.control.conversor.dto.ClientDTO;
 import com.control.conversor.dto.StatusResponseDTO;
+import com.control.conversor.dto.UserDTO;
 import com.control.conversor.services.ClientService;
 import com.control.conversor.mapper.UserMapper;
 import jakarta.validation.Valid;
@@ -18,13 +19,19 @@ public class ClientController {
 
     private final ClientService clientService;
 
-    @Autowired
-    protected UserMapper userMapper;
-
+    @PostMapping
+    private ResponseEntity<StatusResponseDTO> create(@RequestBody ClientDTO clientDTO) {
+        return clientService.create(clientDTO);
+    }
 
     @GetMapping("/{id}")
     private ResponseEntity<StatusResponseDTO> findById(@PathVariable @Valid String id) {
         return clientService.findById(id);
+    }
+
+    @GetMapping("/key/{key}")
+    private ResponseEntity<StatusResponseDTO> findByKey(@PathVariable @Valid String key) {
+        return clientService.findByKey(key);
     }
 
     @GetMapping
@@ -32,10 +39,14 @@ public class ClientController {
         return clientService.findAll();
     }
 
-    @PostMapping
-    private ResponseEntity<StatusResponseDTO> create(@RequestBody ClientDTO clientDTO) {
-        return clientService.create(clientDTO);
+    @PutMapping("/{id}")
+    public ResponseEntity<StatusResponseDTO> update(@RequestBody @Valid ClientDTO clientDTO, @PathVariable String id){
+        return clientService.update(clientDTO,id);
     }
+
+    @PutMapping
+
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<StatusResponseDTO> delete(@PathVariable String id){

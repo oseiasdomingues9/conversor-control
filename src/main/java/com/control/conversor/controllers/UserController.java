@@ -1,5 +1,6 @@
 package com.control.conversor.controllers;
 
+import com.control.conversor.dto.PlanDTO;
 import com.control.conversor.dto.StatusResponseDTO;
 import com.control.conversor.dto.UserDTO;
 import com.control.conversor.services.UserService;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -37,13 +39,18 @@ public class UserController {
         return userService.update(userDTO,id);
     }
 
+    @PutMapping("/{id}/disable")
+    public ResponseEntity<StatusResponseDTO> disable(@PathVariable String id){
+        return userService.disable(id);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<StatusResponseDTO> delete(@PathVariable String id){
         return userService.delete(id);
     }
 
     @GetMapping("/plans")
-    public ResponseEntity<List<String>> findPlans(){
+    public ResponseEntity<List<PlanDTO>> findPlans(){
         return userService.findPlans();
     }
 
