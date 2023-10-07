@@ -2,8 +2,7 @@ package com.control.conversor.controllers;
 
 
 import com.control.conversor.dto.HealthInsuranceDTO;
-import com.control.conversor.dto.StatusResponseDTO;
-import com.control.conversor.dto.UserDTO;
+import com.control.conversor.dto.ResponseDTO;
 import com.control.conversor.services.HealthInsuranceService;
 import com.control.conversor.mapper.UserMapper;
 import jakarta.validation.Valid;
@@ -13,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/health-insurance")
+@RequestMapping("/api/health-insurance")
 @RequiredArgsConstructor
 public class HealthInsuranceController {
 
@@ -23,27 +22,27 @@ public class HealthInsuranceController {
     protected UserMapper userMapper;
 
     @GetMapping("/{id}")
-    private ResponseEntity<StatusResponseDTO> findById(@PathVariable @Valid String id) {
+    private ResponseEntity<ResponseDTO> findById(@PathVariable @Valid String id) {
         return healthInsuranceService.findById(id);
     }
 
     @GetMapping
-    private ResponseEntity<StatusResponseDTO> findAll() {
+    private ResponseEntity<ResponseDTO> findAll() {
         return healthInsuranceService.findAll();
     }
 
     @PostMapping
-    private ResponseEntity<StatusResponseDTO> create(@RequestBody HealthInsuranceDTO healthInsuranceDTO){
+    private ResponseEntity<ResponseDTO> create(@RequestBody HealthInsuranceDTO healthInsuranceDTO){
         return healthInsuranceService.create(healthInsuranceDTO);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StatusResponseDTO> update(@RequestBody @Valid HealthInsuranceDTO healthInsuranceDTO, @PathVariable String id){
+    public ResponseEntity<ResponseDTO> update(@RequestBody @Valid HealthInsuranceDTO healthInsuranceDTO, @PathVariable String id){
         return healthInsuranceService.update(healthInsuranceDTO,id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<StatusResponseDTO> delete(@PathVariable String id){
+    public ResponseEntity<ResponseDTO> delete(@PathVariable String id){
         return healthInsuranceService.delete(id);
     }
 }

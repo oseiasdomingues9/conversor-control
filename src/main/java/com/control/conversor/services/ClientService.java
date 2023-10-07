@@ -2,10 +2,12 @@ package com.control.conversor.services;
 
 
 import com.control.conversor.dto.ClientDTO;
-import com.control.conversor.dto.StatusResponseDTO;
+import com.control.conversor.dto.ResponseDTO;
 import com.control.conversor.entities.Client;
+import com.control.conversor.exception.ResourceNotFoundException;
 import com.control.conversor.mapper.ClientMapper;
 import com.control.conversor.repositories.ClientRepository;
+import com.control.conversor.utils.MessageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,44 +28,44 @@ public class ClientService {
     private ClientMapper clientMapper;
 
 
-    public ResponseEntity<StatusResponseDTO> create(ClientDTO clientDTO) {
+    public ResponseEntity<ResponseDTO> create(ClientDTO clientDTO) {
         Client client = clientRepository.save(clientMapper.toClient(clientDTO));
-        return new ResponseEntity<>(new StatusResponseDTO("Cliente salvo com sucesso", client ,false), HttpStatus.OK);
+        return new ResponseEntity<>(MessageUtils.successMessage("Cliente salvo com sucesso",client),HttpStatus.OK);
     }
 
-    public ResponseEntity<StatusResponseDTO> findById(String id){
+    public ResponseEntity<ResponseDTO> findById(String id){
         Optional<Client> clientOptional = clientRepository.findById(id);
-        return clientOptional.map(client -> new ResponseEntity<>(new StatusResponseDTO("Client encontrado com sucesso", clientMapper.toClientDTO(client), false), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(new StatusResponseDTO("Cliente com id " + id + " não encontrado", null, true), HttpStatus.NOT_FOUND));
+        return clientOptional.map(client -> new ResponseEntity<>(MessageUtils.successMessage("Cliente encontrado com sucesso",clientMapper.toClientDTO(client)),HttpStatus.OK))
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente com id " + id + " não encontrado"));
     }
 
-    public ResponseEntity<StatusResponseDTO> findByKey(String key) {
+    public ResponseEntity<ResponseDTO> findByKey(String key) {
         Optional<Client> clientOptional = clientRepository.findByKey(key);
-        return clientOptional.map(client -> new ResponseEntity<>(new StatusResponseDTO("Client encontrado com sucesso", clientMapper.toClientDTO(client), false), HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(new StatusResponseDTO("Cliente com key " + key + " não encontrado", null, true), HttpStatus.NOT_FOUND));
+        return clientOptional.map(client -> new ResponseEntity<>(MessageUtils.successMessage("Cliente encontrado com sucesso",clientMapper.toClientDTO(client)),HttpStatus.OK))
+                .orElseThrow(() -> new ResourceNotFoundException("Cliente com key " + key + " não encontrado"));
     }
 
-    public ResponseEntity<StatusResponseDTO> findAll(){
+    public ResponseEntity<ResponseDTO> findAll(){
         List<Client> clientList = clientRepository.findAll();
-        return new ResponseEntity<>(new StatusResponseDTO("Cliente salvo com sucesso", clientMapper.toClientDTOList(clientList) ,false), HttpStatus.OK);
+        return new ResponseEntity<>(MessageUtils.successMessage("Clientes encontrados com sucesso",clientMapper.toClientDTOList(clientList)),HttpStatus.OK);
     }
 
-    public ResponseEntity<StatusResponseDTO> update(ClientDTO clientDTO, String id) {
+    public ResponseEntity<ResponseDTO> update(ClientDTO clientDTO, String id) {
         Optional<Client> opt = clientRepository.findById(id);
         if(opt.isPresent()) {
             Client client = opt.get();
             client.setName(clientDTO.name());
             client.setKey(clientDTO.key());
             clientRepository.save(client);
-            return new ResponseEntity<>(new StatusResponseDTO("Usuario Atualizado com sucesso",client, false), HttpStatus.OK);
+            return new ResponseEntity<>(MessageUtils.successMessage("Cliente atualizado com sucesso",client),HttpStatus.OK);
         }else {
-            return new ResponseEntity<>(new StatusResponseDTO("Usuario não encontrado",null, true), HttpStatus.NOT_FOUND);
+            throw  new ResourceNotFoundException("Cliente com id " + id + " não encontrado");
         }
     }
 
-    public ResponseEntity<StatusResponseDTO> delete(String id){
+    public ResponseEntity<ResponseDTO> delete(String id){
         clientRepository.deleteById(id);
-        return new ResponseEntity<>(new StatusResponseDTO("Cliente deletado com sucesso",null,false),HttpStatus.OK);
+        return new ResponseEntity<>(MessageUtils.successMessage("Cliente deletado com sucesso",null),HttpStatus.OK);
     }
 
 

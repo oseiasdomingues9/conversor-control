@@ -1,5 +1,5 @@
 package com.control.conversor.dto;
 
 
-public record LoginResponseDTO(String token,String userId) {
+public record LoginResponseDTO(String userId) {
 }

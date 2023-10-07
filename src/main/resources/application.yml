@@ -32,3 +32,8 @@ api:
   security:
     token:
       secret : ${JWT_SECRET:my-secret-key}
+      jwtExpirationHour : 24
+      jwtRefreshExpirationHour : 24
+    cookie:
+      token : token-jwt
+      token-refresh : token-refresh-jwt

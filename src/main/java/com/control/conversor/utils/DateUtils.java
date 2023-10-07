@@ -2,9 +2,7 @@ package com.control.conversor.utils;
 
 import lombok.experimental.UtilityClass;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 @UtilityClass
@@ -21,6 +19,10 @@ public class DateUtils {
 
     public LocalDate convertLocalDateTimeToLocalDate(LocalDateTime localDateTime) {
        return localDateTime.toLocalDate();
+    }
+
+    public Instant hourToInstant(int hour){
+        return LocalDateTime.now().plusHours(hour).toInstant(ZoneOffset.ofHours(-3));
     }
 
     public LocalDate toLocalDate(String date){

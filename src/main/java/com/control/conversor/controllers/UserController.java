@@ -1,7 +1,7 @@
 package com.control.conversor.controllers;
 
 import com.control.conversor.dto.PlanDTO;
-import com.control.conversor.dto.StatusResponseDTO;
+import com.control.conversor.dto.ResponseDTO;
 import com.control.conversor.dto.UserDTO;
 import com.control.conversor.services.UserService;
 import jakarta.validation.Valid;
@@ -10,42 +10,41 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<StatusResponseDTO> create(@RequestBody @Valid UserDTO userDTO){
+    public ResponseEntity<ResponseDTO> create(@RequestBody @Valid UserDTO userDTO){
         return userService.create(userDTO);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StatusResponseDTO> findById(@PathVariable @Valid String id){
+    public ResponseEntity<ResponseDTO> findById(@PathVariable @Valid String id){
         return userService.findById(id);
     }
 
     @GetMapping
-    public ResponseEntity<StatusResponseDTO> findAll(){
+    public ResponseEntity<ResponseDTO> findAll(){
         return userService.findAll();
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StatusResponseDTO> update(@RequestBody @Valid UserDTO userDTO, @PathVariable String id){
+    public ResponseEntity<ResponseDTO> update(@RequestBody @Valid UserDTO userDTO, @PathVariable String id){
         return userService.update(userDTO,id);
     }
 
     @PutMapping("/{id}/disable")
-    public ResponseEntity<StatusResponseDTO> disable(@PathVariable String id){
+    public ResponseEntity<ResponseDTO> disable(@PathVariable String id){
         return userService.disable(id);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<StatusResponseDTO> delete(@PathVariable String id){
+    public ResponseEntity<ResponseDTO> delete(@PathVariable String id){
         return userService.delete(id);
     }
 
