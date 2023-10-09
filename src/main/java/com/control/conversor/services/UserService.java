@@ -139,4 +139,9 @@ public class UserService {
     public UserDetails findByLogin(String login) {
         return userRepository.findByLogin(login);
     }
+
+    public ResponseEntity<ResponseDTO> findRole(String id) {
+        return userRepository.findById(id).map(user -> new ResponseEntity<>(MessageUtils.successMessage("Role encontrada com sucesso", user.getRole()), HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(MessageUtils.successMessage("Usuário não encontrado", "USER"), HttpStatus.OK));
+    }
 }

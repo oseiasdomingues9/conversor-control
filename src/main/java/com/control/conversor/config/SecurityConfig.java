@@ -34,6 +34,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/api/auth/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/auth/logout").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/refresh-token").permitAll()
                         .requestMatchers(HttpMethod.GET, "/auth/admin-validate").hasRole(UserRole.ADMIN.getRole().toUpperCase())
                         .requestMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()

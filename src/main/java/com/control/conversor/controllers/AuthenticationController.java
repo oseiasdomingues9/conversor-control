@@ -25,9 +25,9 @@ public class AuthenticationController {
     public ResponseEntity<?> refreshToken(HttpServletRequest request) {
         return authorizationService.refresh(request);
     }
-    @PostMapping("/logout")
-    public ResponseEntity<?> logout() {
-        return authorizationService.logout();
+    @GetMapping("/logout")
+    public ResponseEntity<?> logout(HttpServletRequest httpServletRequest) {
+        return authorizationService.logout(httpServletRequest);
     }
 
 //    @GetMapping("/validate")

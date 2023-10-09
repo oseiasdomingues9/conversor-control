@@ -16,16 +16,16 @@ import org.springframework.web.util.WebUtils;
 @Component
 public class JwtUtils {
 
-    @Value("${api.security.token.secret}")
+    @Value("${authentication.jwt.secret}")
     private String secret;
 
-    @Value("${api.security.token.jwtExpirationHour}")
+    @Value("${authentication.token_expiration.token_expiration}")
     private Integer hourToken;
 
-    @Value("${api.security.cookie.token}")
+    @Value("${authentication.cookies.token}")
     private String tokenCookie;
 
-    @Value("${api.security.cookie.token-refresh}")
+    @Value("${authentication.cookies.token_refresh}")
     private String tokenRefreshCookie;
 
     public ResponseCookie generateJwtCookie(User user) {

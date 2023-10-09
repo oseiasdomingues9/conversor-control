@@ -28,12 +28,13 @@ spring:
     main:
       allow-bean-definition-overriding: true
 
-api:
-  security:
-    token:
-      secret : ${JWT_SECRET:my-secret-key}
-      jwtExpirationHour : 24
-      jwtRefreshExpirationHour : 24
-    cookie:
-      token : token-jwt
-      token-refresh : token-refresh-jwt
+
+authentication:
+  jwt:
+    secret: ${JWT_SECRET:yqGkd4eZQvHM2amhwuL6TX}
+  token_expiration:
+    token_expiration: ${JWT_HOUR:1}
+    refresh_token_expiration: ${JWT_REFRESH_HOUR:8}
+  cookies:
+    token: session_token
+    token_refresh: session_token_refresh

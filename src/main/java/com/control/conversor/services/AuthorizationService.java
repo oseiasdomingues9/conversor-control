@@ -6,7 +6,6 @@ import com.control.conversor.entities.RefreshToken;
 import com.control.conversor.entities.User;
 import com.control.conversor.exception.ApplicationException;
 import com.control.conversor.exception.CredentialException;
-import com.control.conversor.exception.TokenRefreshException;
 import com.control.conversor.utils.HeaderUtils;
 import com.control.conversor.utils.JwtUtils;
 import jakarta.servlet.http.HttpServletRequest;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -33,7 +31,6 @@ public class AuthorizationService implements UserDetailsService {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final RefreshTokenService refreshTokenService;
-
     private final JwtUtils jwtUtils;
 
     @Autowired
@@ -72,35 +69,17 @@ public class AuthorizationService implements UserDetailsService {
     }
     
     public ResponseEntity<Void> refresh(HttpServletRequest request) {
-        String refreshTokenValue = jwtUtils.getJwtRefreshFromCookies(request);
-
-        if ((refreshTokenValue != null) && (!refreshTokenValue.isEmpty())) {
-            RefreshToken refreshToken = refreshTokenService.findByToken(refreshTokenValue)
-                    .orElseThrow(() -> new TokenRefreshException("O token de atualização não está na base de dados!"));
-            refreshTokenService.verifyExpiration(refreshToken);
-            var user = refreshToken.getUser();
-            if (user.isActive()){
-                refreshTokenService.updateExpiryDate(refreshToken);
-
-                ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(user);
-                var httpHeaders = new HttpHeaders();
-                httpHeaders.add(HttpHeaders.SET_COOKIE,jwtCookie.toString());
-
-                return new ResponseEntity<>(httpHeaders,HttpStatus.OK);
-            }else {
-                throw new TokenRefreshException("Desculpe, sua conta está desativada. Por favor, entre em contato com o suporte para obter assistência");
-            }
-        }
-        throw new TokenRefreshException("O token de atualização está vazio!");
+        return refreshTokenService.refreshToken(jwtUtils.getJwtRefreshFromCookies(request));
     }
 
-
-    public ResponseEntity<Void> logout() {
-        Object principle = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (!Objects.equals(principle.toString(), "anonymousUser")) {
-            String userId = ((User) principle).getId();
+    public ResponseEntity<Void> logout(HttpServletRequest request) {
+        String userId = request.getHeader("user");
+        if(userId != null){
             refreshTokenService.deleteByUserId(userId);
+        }else{
+            throw new RuntimeException("ERRO AO DESLOGAR");
         }
+
         var jwtCookie = jwtUtils.getCleanJwtCookie();
         var jwtRefreshCookie = jwtUtils.getCleanJwtRefreshCookie();
         var httpHeaders = HeaderUtils.getHeaders(jwtCookie,jwtRefreshCookie);

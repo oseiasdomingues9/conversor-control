@@ -28,6 +28,11 @@ public class UserController {
         return userService.findById(id);
     }
 
+    @GetMapping("/{id}/role")
+    public ResponseEntity<ResponseDTO> findRole(@PathVariable @Valid String id){
+        return userService.findRole(id);
+    }
+
     @GetMapping
     public ResponseEntity<ResponseDTO> findAll(){
         return userService.findAll();

@@ -14,4 +14,9 @@ public class HeaderUtils {
         return httpHeaders;
     }
 
+    public HttpHeaders getHeaders(ResponseCookie jwtCookie){
+        var httpHeaders = new HttpHeaders();
+        httpHeaders.add(HttpHeaders.SET_COOKIE,jwtCookie.toString());
+        return httpHeaders;
+    }
 }
